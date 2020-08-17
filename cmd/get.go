@@ -33,5 +33,5 @@ var output string
 
 func init() {
 	rootCmd.AddCommand(getCmd)
-	getCmd.PersistentFlags().StringVarP(&output,"output", "o", "json", "Format to output dashboard: json, terraform")
+	getCmd.PersistentFlags().StringVarP(&output,"output", "o", "json", "format to output dashboard: json, terraform")
 }

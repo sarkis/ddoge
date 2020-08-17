@@ -17,8 +17,8 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
-	"os"
 )
 
 // getDashboardCmd represents the get dashboard command
@@ -27,12 +27,11 @@ var getDashboardCmd = &cobra.Command{
 	Short: "Get a dashboard by ID",
 	Long: `Get a dashboard by ID`,
 	Args: cobra.ExactArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		// get dashboard for specific IDs passed
-		resp, r, err := client.DashboardsApi.GetDashboard(ddCtx(), args[0]).Execute()
+		resp, _, err := client.DashboardsApi.GetDashboard(ddCtx(), args[0]).Execute()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Error when calling `DashboardsApi.GetDashboard``: %v\n", err)
-			fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+			return fmt.Errorf("error calling `DashboardsApi.GetDashboard`: %v", err)
 		}
 
 		switch output {
@@ -42,6 +41,7 @@ var getDashboardCmd = &cobra.Command{
 			dashboardJson, _ := resp.MarshalJSON()
 			fmt.Println(prettyJson(dashboardJson))
 		}
+		return nil
 	},
 }
 
